@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, DollarSign, Globe, Building } from "lucide-react";
 
@@ -25,11 +25,13 @@ const Simulator = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium flex items-center gap-2">
-                  <Building className="w-4 h-4" />
+                <label htmlFor="business-type" className="text-sm font-medium flex items-center gap-2">
+                  <Building className="w-4 h-4" aria-hidden="true" />
                   Type of Business
                 </label>
                 <select
+                  id="business-type"
+                  aria-label="Select type of business"
                   className="input-field"
                   value={formData.businessType}
                   onChange={(e) =>
@@ -42,11 +44,13 @@ const Simulator = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium flex items-center gap-2">
-                  <DollarSign className="w-4 h-4" />
+                <label htmlFor="currency" className="text-sm font-medium flex items-center gap-2">
+                  <DollarSign className="w-4 h-4" aria-hidden="true" />
                   Currency
                 </label>
                 <select
+                  id="currency"
+                  aria-label="Select currency"
                   className="input-field"
                   value={formData.currency}
                   onChange={(e) =>
@@ -60,11 +64,13 @@ const Simulator = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium flex items-center gap-2">
-                  <Globe className="w-4 h-4" />
+                <label htmlFor="language" className="text-sm font-medium flex items-center gap-2">
+                  <Globe className="w-4 h-4" aria-hidden="true" />
                   Language
                 </label>
                 <select
+                  id="language"
+                  aria-label="Select language"
                   className="input-field"
                   value={formData.language}
                   onChange={(e) =>
@@ -81,9 +87,10 @@ const Simulator = () => {
             <button
               type="submit"
               className="btn-primary w-full flex items-center justify-center gap-2"
+              aria-label="Continue to calculator with selected options"
             >
               <span>Continue</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </button>
           </form>
         </div>

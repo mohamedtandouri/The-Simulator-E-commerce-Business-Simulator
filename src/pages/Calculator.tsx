@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Calculator as CalcIcon, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -46,13 +46,63 @@ const Calculator = () => {
     setLoading(true);
     
     try {
-      const baseRevenue = Number(formData.productPrice) * (Number(formData.conversionRate) / 100);
+      // Validate required fields
+      const requiredFields = ['trafficSpending', 'productPrice', 'productCost', 'conversionRate'];
+      const missingFields = requiredFields.filter(field => !formData[field as keyof typeof formData] || isNaN(Number(formData[field as keyof typeof formData])));
+      
+      if (missingFields.length > 0) {
+        toast({
+          title: "Error",
+          description: "Please fill in all required fields with valid numbers.",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
+      // Validate number ranges
+      const trafficSpending = Number(formData.trafficSpending);
+      const productPrice = Number(formData.productPrice);
+      const productCost = Number(formData.productCost);
+      const conversionRate = Number(formData.conversionRate);
+
+      if (trafficSpending < 0 || productPrice < 0 || productCost < 0) {
+        toast({
+          title: "Error",
+          description: "Values cannot be negative.",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
+      if (conversionRate < 0 || conversionRate > 100) {
+        toast({
+          title: "Error",
+          description: "Conversion rate must be between 0 and 100.",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
+      if (productCost > productPrice) {
+        toast({
+          title: "Warning",
+          description: "Product cost is higher than product price. You will have a negative margin.",
+          variant: "destructive",
+        });
+        setLoading(false);
+        return;
+      }
+
+      const baseRevenue = productPrice * (conversionRate / 100);
       const upSaleRevenue = showUpSales ? 
         (Number(formData.upSaleProductPrice) * (Number(formData.upSaleConversionRate) / 100)) : 0;
       
       const totalRevenue = baseRevenue + upSaleRevenue;
       
-      const baseCosts = Number(formData.productCost) + Number(formData.trafficSpending);
+      const baseCosts = productCost + trafficSpending;
       const upSaleCosts = showUpSales ? Number(formData.upSaleProductCost) : 0;
       const shippingAndCallCenterCosts = showCallCenterAndShipping ? 
         (Number(formData.callCenterCost) + Number(formData.shippingCost)) : 0;
@@ -60,9 +110,9 @@ const Calculator = () => {
       const totalCosts = baseCosts + upSaleCosts + shippingAndCallCenterCosts;
       
       const processedData = {
-        trafficSpending: Number(formData.trafficSpending) || 0,
-        productSpending: Number(formData.productCost) || 0,
-        salesConversion: Number(formData.conversionRate) || 0,
+        trafficSpending: trafficSpending || 0,
+        productSpending: productCost || 0,
+        salesConversion: conversionRate || 0,
         shippingFees: Number(formData.shippingCost) || 0,
         callCenterFees: Number(formData.callCenterCost) || 0,
         totalRevenue: totalRevenue,

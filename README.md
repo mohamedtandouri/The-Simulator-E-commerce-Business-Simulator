@@ -1,7 +1,7 @@
-
 # The Simulator - E-commerce Business Simulator
 
-## ScreanShot
+## 📸 Screenshots
+
 ![The Simulator](/public/homewhit.png)
 
 ![The Simulator](/public/home.png)
@@ -103,5 +103,5 @@ Calculator
 
 [Privacy Policy](https://github.com/simulator-app/ecommerce-simulator.git)
 
-[Terms ](url)of [Service](https://github.com/simulator-app/ecommerce-simulator.git)
+[Terms of Service](https://github.com/simulator-app/ecommerce-simulator.git)
 
